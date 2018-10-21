@@ -38,6 +38,13 @@ environment :prod do
   set include_erts: true
   set include_src: false
   set cookie: :"diy7,@9[~V7:2]ALlC)$a0>,^,R3]t8`T}6/h1~>;WN(u<T0(?5yw4uF3g%VF{;s"
+
+  set config_providers: [
+    {Mix.Releases.Config.Providers.Elixir, ["${RELEASE_ROOT_DIR}/etc/config.exs"]}
+  ]
+  set overlays: [
+    {:copy, "rel/config/config.exs", "etc/config.exs"}
+  ]
 end
 
 # You may define one or more releases in this file.
@@ -46,7 +53,7 @@ end
 # will be used by default
 
 release :kube_native_umbrella do
-  set version: "0.1.0"
+  set version: current_version(:kube_native)
   set applications: [
     :runtime_tools,
     kube_native: :permanent,
