@@ -2,6 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "kube-native.fullname" . }}
+{{- with .Values.service.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
   labels:
     app.kubernetes.io/name: {{ include "kube-native.name" . }}
     helm.sh/chart: {{ include "kube-native.chart" . }}
@@ -14,6 +18,10 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    - port: {{ .Values.service.httpsPort }}
+      targetPort: https
+      protocol: TCP
+      name: https
   selector:
     app.kubernetes.io/name: {{ include "kube-native.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

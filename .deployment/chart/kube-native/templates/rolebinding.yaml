@@ -1,0 +1,17 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "kube-native.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "kube-native.name" . }}
+    helm.sh/chart: {{ include "kube-native.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+subjects:
+  - kind: ServiceAccount
+    apiGroup: ""
+    name: {{ template "kube-native.fullname" . }}
+roleRef:
+  kind: Role
+  name: {{ template "kube-native.fullname" . }}
+  apiGroup: rbac.authorization.k8s.io

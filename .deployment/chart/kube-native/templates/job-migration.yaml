@@ -1,25 +1,13 @@
-apiVersion: apps/v1beta2
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: {{ include "kube-native.fullname" . }}
+  name: {{ template "kube-native.fullname" . }}-migration-{{ .Release.Revision }}
   labels:
     app.kubernetes.io/name: {{ include "kube-native.name" . }}
     helm.sh/chart: {{ include "kube-native.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  # TODO
-  minReadySeconds: {{ default .Values.deployment.minReadySeconds 30 }}
-  # TODO
-  progressDeadlineSeconds: {{ default .Values.deployment.progressDeadlineSeconds 90 }}
-  replicas: {{ .Values.replicaCount }}
-  revisionHistoryLimit: {{ default .Values.deployment.revisionHistoryLimit 10}}
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: {{ include "kube-native.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
-  strategy:
-{{ toYaml .Values.resources | indent 4 }}
   template:
     metadata:
       annotations:
@@ -32,10 +20,12 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
     spec:
       serviceAccountName: {{ template "kube-native.fullname" . }}
+      restartPolicy: OnFailure
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["migrate", ""] # TODO: arity 0 version?
           env:
             - name: "NODE_COOKIE"
               valueFrom:
@@ -48,28 +38,7 @@ spec:
                   fieldPath: "status.podIP"
             - name: "REPLACE_OS_VARS" # TODO: Conditional by Value
               value: "true"
-          ports:
-            - name: http
-              containerPort: 4000
-              protocol: TCP
-            - name: https
-              containerPort: 4001
-              protocol: TCP
-          # TODO: handle non-zero exit on normal command behavior
-          # lifecycle:
-          #   preStop:
-          #     exec:
-          #       command:
-          #         - /app/bin/ex_mud
-          #         - stop
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+          ports: []
           volumeMounts: # TODO
             # - name: app-config
             #   mountPath: /app/etc/config.exs
@@ -79,9 +48,9 @@ spec:
               mountPath: /app/etc/config.exs
               readOnly: true
               subPath: secrets.exs
-            - name: app-tls
-              mountPath: /app/tls
-              readOnly: true
+            # - name: app-tls
+            #   mountPath: /app/tls
+            #   readOnly: true
           resources:
 {{ toYaml .Values.resources | indent 12 }}
       # TODO
@@ -98,14 +67,14 @@ spec:
             items:
               - key: secrets.exs
                 path: secrets.exs
-        - name: app-tls
-          secret:
-            secretName: {{ .Values.tls.secret.name }}
-            items:
-              - key: {{ .Values.tls.secret.key_filename }}
-                path: {{ .Values.tls.secret.key_filename }}
-              - key: {{ .Values.tls.secret.cert_filename }}
-                path: {{ .Values.tls.secret.cert_filename }}
+        # - name: app-tls
+        #   secret:
+        #     secretName: {{ .Values.tls.secret.name }}
+        #     items:
+        #       - key: {{ .Values.tls.secret.key_filename }}
+        #         path: {{ .Values.tls.secret.key_filename }}
+        #       - key: {{ .Values.tls.secret.cert_filename }}
+        #         path: {{ .Values.tls.secret.cert_filename }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
