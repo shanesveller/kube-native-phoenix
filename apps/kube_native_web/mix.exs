@@ -45,7 +45,8 @@ defmodule KubeNativeWeb.MixProject do
       {:gettext, "~> 0.11"},
       {:kube_native, in_umbrella: true},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:libcluster, "~> 3.0"}
     ]
   end
 
