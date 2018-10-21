@@ -6,12 +6,15 @@ defmodule KubeNativeWeb.Application do
   use Application
 
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies)
+
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
-      KubeNativeWeb.Endpoint
+      KubeNativeWeb.Endpoint,
       # Starts a worker by calling: KubeNativeWeb.Worker.start_link(arg)
       # {KubeNativeWeb.Worker, arg},
+      {Cluster.Supervisor, [topologies, [name: KubeNativeWeb.ClusterSupervisor]]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

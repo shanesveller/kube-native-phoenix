@@ -16,6 +16,10 @@ config :kube_native_web, KubeNativeWeb.Endpoint,
   render_errors: [view: KubeNativeWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: KubeNativeWeb.PubSub, adapter: Phoenix.PubSub.PG2]
 
+config :libcluster,
+  debug: true,
+  topologies: []
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
