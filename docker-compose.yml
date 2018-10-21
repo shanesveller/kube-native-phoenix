@@ -1,0 +1,25 @@
+# https://docs.docker.com/compose/compose-file/
+version: '3.7'
+services:
+  kube_native:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: ecto://kube_native:kube_native@postgres/kube_native
+    ports:
+      - 4000:4000
+
+  postgres:
+    image: postgres:10.5-alpine
+    environment:
+      POSTGRES_DB: kube_native
+      POSTGRES_PASSWORD: kube_native
+      POSTGRES_USER: kube_native
+    ports:
+      - 15432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data: {}
