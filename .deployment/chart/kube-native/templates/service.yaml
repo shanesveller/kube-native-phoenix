@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "kube-native.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "kube-native.name" . }}
+    helm.sh/chart: {{ include "kube-native.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "kube-native.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
