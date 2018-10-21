@@ -67,6 +67,8 @@ config :kube_native_web, KubeNativeWeb.Endpoint,
 # Note you can't rely on `System.get_env/1` when using releases.
 # See the releases documentation accordingly.
 
+config :phoenix, :serve_endpoints, true
+
 # Finally import the config/prod.secret.exs which should be versioned
 # separately.
 import_config "prod.secret.exs"
