@@ -8,11 +8,17 @@ services:
     environment:
       DATABASE_URL: ecto://kube_native:kube_native@postgres/kube_native
       HOSTNAME: localhost
+      HTTPS_PORT: 4001
       PORT: 4000
       # mix phx.gen.secret
       SECRET_KEY_BASE: fzBk8OEcI8thGxlypWPUqfR2w2WopdN8v8pmpuy2JNj2eerbYFnlecuVMrFPGYnW
+      TLS_CERTFILE: /cert/selfsigned.pem
+      TLS_KEYFILE: /cert/selfsigned_key.pem
     ports:
       - 4000:4000
+      - 4001:4001
+    volumes:
+      - ./apps/kube_native_web/priv/cert:/cert
 
   postgres:
     image: postgres:10.5-alpine

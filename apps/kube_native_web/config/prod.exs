@@ -15,7 +15,11 @@ use Mix.Config
 # before starting your production server.
 config :kube_native_web, KubeNativeWeb.Endpoint,
   http: [:inet6, port: System.get_env("PORT") || 4000],
-  url: [host: "example.com", port: 80],
+  https: [
+    :inet6,
+    port: 4001,
+    cipher_suite: :strong
+  ],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # ## SSL Support
