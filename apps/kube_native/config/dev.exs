@@ -6,8 +6,5 @@ use Mix.Config
 
 # Configure your database
 config :kube_native, KubeNative.Repo,
-  username: "postgres",
-  password: "postgres",
   database: "kube_native_dev",
-  hostname: "localhost",
   pool_size: 10
