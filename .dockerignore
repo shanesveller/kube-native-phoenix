@@ -26,6 +26,7 @@ erl_crash.dump
 # Umbrella
 apps/**/config/*.secret.exs
 apps/**/node_modules
+apps/**/priv/cert
 apps/**/priv/static
 
 # Docker
