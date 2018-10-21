@@ -4,4 +4,5 @@
 # the umbrella root.
 use Mix.Config
 
-import_config "prod.secret.exs"
+config :kube_native, KubeNative.Repo,
+  pool_size: 15

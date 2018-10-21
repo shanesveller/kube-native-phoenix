@@ -24,6 +24,7 @@ erl_crash.dump
 .tool-versions
 
 # Umbrella
+apps/**/config/*.secret.exs
 apps/**/node_modules
 apps/**/priv/static
 

@@ -69,6 +69,5 @@ config :kube_native_web, KubeNativeWeb.Endpoint,
 
 config :phoenix, :serve_endpoints, true
 
-# Finally import the config/prod.secret.exs which should be versioned
-# separately.
-import_config "prod.secret.exs"
+config :kube_native_web, KubeNativeWeb.Endpoint,
+  secret_key_base: "CHANGEME"
