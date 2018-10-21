@@ -59,5 +59,9 @@ release :kube_native_umbrella do
     kube_native: :permanent,
     kube_native_web: :permanent
   ]
+  set commands: [
+    migrate: "rel/commands/migrate.sh",
+    seed: "rel/commands/seed.sh"
+  ]
 end
 
