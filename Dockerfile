@@ -30,7 +30,6 @@ COPY --from=deps /app/deps/phoenix_html /deps/phoenix_html
 RUN npm ci
 COPY apps/kube_native_web/assets /app
 RUN npm run deploy
-RUN ls -al
 
 # docker build -t kube_native:releaser --target=releaser .
 FROM deps as releaser
