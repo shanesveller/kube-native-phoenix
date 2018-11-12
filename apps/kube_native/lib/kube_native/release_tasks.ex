@@ -4,7 +4,7 @@ defmodule KubeNative.ReleaseTasks do
     :ssl,
     :postgrex,
     :ecto,
-    :telemetry
+    :ecto_sql
   ]
 
   @repos Application.get_env(:kube_native, :ecto_repos, [])
