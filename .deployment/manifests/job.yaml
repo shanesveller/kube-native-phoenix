@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kube-native-migration-0
+  labels:
+    app: kube-native
+spec:
+  template:
+    metadata:
+      labels:
+        app: kube-native
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: kube-native
+          image: kube-native:latest
+          imagePullPolicy: IfNotPresent
+          args: ["migrate"]
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          envFrom:
+            - configMapRef:
+                name: kube-native-env
+            - secretRef:
+                name: kube-native-env-secret
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 256Mi
+            requests:
+              cpu: 250m
+              memory: 128Mi
