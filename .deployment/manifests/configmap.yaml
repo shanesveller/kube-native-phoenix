@@ -6,6 +6,7 @@ metadata:
     app: kube-native
 data:
   HOSTNAME: localhost
+  # cannot be a YAML number, thus the quotes
   PORT: "4000"
   # cannot be a YAML boolean true, thus the quotes
   REPLACE_OS_VARS: "true"
