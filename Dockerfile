@@ -38,13 +38,13 @@ COPY --from=frontend /priv/static apps/kube_native_web/priv/static
 RUN mix do phx.digest, release --env=prod --no-tar
 
 # docker run -it --rm elixir:1.7.3-alpine sh -c 'head -n1 /etc/issue'
-FROM alpine:3.8 as runner
+FROM alpine:3.9 as runner
 RUN addgroup -g 1000 kube_native && \
     adduser -D -h /app \
       -G kube_native \
       -u 1000 \
       kube_native
-RUN apk add -U bash libssl1.0
+RUN apk add -U bash libssl1.1
 USER kube_native
 WORKDIR /app
 COPY --from=releaser /app/_build/prod/rel/kube_native_umbrella /app
