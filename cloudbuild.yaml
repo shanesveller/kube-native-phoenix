@@ -52,7 +52,7 @@ steps:
       - 'build'
       - '-t'
       - 'gcr.io/$PROJECT_ID/kube_native:$COMMIT_SHA'
-      - '--target=releaser'
+      - '--target=runner'
       - '--cache-from=gcr.io/$PROJECT_ID/kube_native:builder'
       - '--cache-from=gcr.io/$PROJECT_ID/kube_native:deps'
       - '--cache-from=gcr.io/$PROJECT_ID/kube_native:frontend'
